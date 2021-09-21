@@ -19,8 +19,8 @@ int read_text (Text *text_pointer, const char *file_name)
         return BAD_NAME;
 
     FILE *stream = fopen (file_name, "r");
-	size_t i = 0;
-	size_t j = 0;
+    size_t i = 0;
+    size_t j = 0;
 
     if (!stream)
         return BAD_FILE;
@@ -31,9 +31,9 @@ int read_text (Text *text_pointer, const char *file_name)
 
     strcpy (text.name, file_name);
 
-	fseek (stream, 0, SEEK_END);       
-	text.size = ftell (stream);
-	fseek (stream, 0, SEEK_SET);
+    fseek (stream, 0, SEEK_END);       
+    text.size = ftell (stream);
+    fseek (stream, 0, SEEK_SET);
 
     char *buf = (char *   ) calloc (text.size + 1, sizeof (char   ) ); 
     
@@ -70,19 +70,19 @@ int read_text (Text *text_pointer, const char *file_name)
 
     text.data = (wchar_t *) realloc (text.data, (text.chars_amt + 1) * sizeof (wchar_t) ); 
 
-	for (; i < text.chars_amt; i++)
-	{
+    for (; i < text.chars_amt; i++)
+    {
         if (text.data[i] == L'\r')
             text.data[i] = L' ';
 
-		if (text.data[i] == L'\n')
+        if (text.data[i] == L'\n')
         {
-			text.data[i] = L'\0'; 
+            text.data[i] = L'\0'; 
             j++;
         }
-	}
+    }
 
-	text.lines_amt = j;
+    text.lines_amt = j;
 
     text.lines = (Line *) calloc (text.lines_amt + 1, sizeof (Line) );
 
@@ -93,16 +93,16 @@ int read_text (Text *text_pointer, const char *file_name)
     }
 
     text.lines[0].str = text.data;
-	for (i = 1, j = 1; i < text.chars_amt; i++)
-	{
-		if (!text.data[i-1])
-		{
-			text.lines[j].str = text.data  + i;		 				 
-			text.lines[j].len = wcslen (text.lines[j].str);     
-	
-			j++;
-		}
-	}
+    for (i = 1, j = 1; i < text.chars_amt; i++)
+    {
+        if (!text.data[i-1])
+        {
+            text.lines[j].str = text.data  + i;		 				 
+            text.lines[j].len = wcslen (text.lines[j].str);     
+    
+            j++;
+        }
+    }
 
     if (text.lines_amt != j)
     { 
@@ -115,7 +115,7 @@ int read_text (Text *text_pointer, const char *file_name)
     *text_pointer = text;
     text_pointer->status = INIT;
 
-	return 0;
+    return 0;
 }
 
 //*********************************************************************************************************************
@@ -135,8 +135,8 @@ int write_text (Text text, const char *file_name)
 
     setlocale (LC_CTYPE, "C.UTF-8");
 
-	for (size_t i = 0; i < text.lines_amt; i++)
-		    fprintf (stream, "%ls\n", text.lines[i].str);
+    for (size_t i = 0; i < text.lines_amt; i++)
+            fprintf (stream, "%ls\n", text.lines[i].str);
 
     fclose (stream);
 
@@ -222,38 +222,38 @@ void sort_lines (Line *lines, size_t lines_amt, lines_cmp_t lines_cmp, is_letter
     if (!lines || !lines_cmp || !letters_cmp || !is_letter)
         return;    
 
-	size_t wall = 0;                               
-	for (size_t i = 0; i < lines_amt - 1; i++)     
-	{
-		if (lines_cmp (lines[i], lines[lines_amt - 1], is_letter, letters_cmp) < 0) 		
-		{
-			Line buff = lines[i];
-			lines[i] = lines[wall];
-			lines[wall] = buff;
-			wall++;
-		}
+    size_t wall = 0;                               
+    for (size_t i = 0; i < lines_amt - 1; i++)     
+    {
+        if (lines_cmp (lines[i], lines[lines_amt - 1], is_letter, letters_cmp) < 0) 		
+        {
+            Line buff = lines[i];
+            lines[i] = lines[wall];
+            lines[wall] = buff;
+            wall++;
+        }
     }
-	
+    
     if (1)
     {
-	    Line buff = lines[lines_amt - 1];         
+        Line buff = lines[lines_amt - 1];         
         lines[lines_amt - 1] = lines[wall];
-		lines[wall] = buff;
-	}
-	
+        lines[wall] = buff;
+    }
+    
 
-	if (wall >= 2)                          
-		sort_lines (lines, wall, lines_cmp, is_letter, letters_cmp);
-	if (lines_amt - wall >= 3)                 
-		sort_lines (lines + wall + 1, lines_amt - wall - 1, lines_cmp, is_letter, letters_cmp);
+    if (wall >= 2)                          
+        sort_lines (lines, wall, lines_cmp, is_letter, letters_cmp);
+    if (lines_amt - wall >= 3)                 
+        sort_lines (lines + wall + 1, lines_amt - wall - 1, lines_cmp, is_letter, letters_cmp);
 }
 
 //*********************************************************************************************************************
 
 int lines_cmp (Line str1, Line str2, is_letter_t is_letter, letters_cmp_t letters_cmp)
 {
-	const wchar_t *s1 = str1.str;
-	const wchar_t *s2 = str2.str;
+    const wchar_t *s1 = str1.str;
+    const wchar_t *s2 = str2.str;
 
     if (!s1 || !s2 || !is_letter || !letters_cmp)
         return BAD_POINTER;
@@ -261,18 +261,18 @@ int lines_cmp (Line str1, Line str2, is_letter_t is_letter, letters_cmp_t letter
     int i = 0;
     int j = 0;
     while (1)
-	{
-		while (!is_letter (s1[i]) )
-			if (s1[i] == '\0')
-				break;
-			else
-				i++;
-		
-		while (!is_letter (s2[j]) )
-			if (s2[j] == '\0')
-				break;
-			else
-				j++;
+    {
+        while (!is_letter (s1[i]) )
+            if (s1[i] == '\0')
+                break;
+            else
+                i++;
+        
+        while (!is_letter (s2[j]) )
+            if (s2[j] == '\0')
+                break;
+            else
+                j++;
 
         int res = letters_cmp (s1[i], s2[j]);
         if (res)
@@ -284,15 +284,15 @@ int lines_cmp (Line str1, Line str2, is_letter_t is_letter, letters_cmp_t letter
             i++;
             j++;
         }
-	}	
+    }	
 }
 
 //*********************************************************************************************************************
 
 int rev_lines_cmp (Line str1, Line str2, is_letter_t is_letter, letters_cmp_t letters_cmp)
 {
-	const wchar_t *s1 = str1.str;
-	const wchar_t *s2 = str2.str;
+    const wchar_t *s1 = str1.str;
+    const wchar_t *s2 = str2.str;
 
     if (!s1 || !s2 || !is_letter || !letters_cmp)
         return BAD_POINTER;
@@ -300,18 +300,18 @@ int rev_lines_cmp (Line str1, Line str2, is_letter_t is_letter, letters_cmp_t le
     int i = str1.len;
     int j = str2.len;
     while (1)
-	{
-		while (!is_letter (s1[i]) )
-			if (!i)
-				break;
-			else
-				i--;				
+    {
+        while (!is_letter (s1[i]) )
+            if (!i)
+                break;
+            else
+                i--;				
 
-		while (!is_letter (s2[j]) )
-			if (!j)
-				break;
-			else
-				j--;
+        while (!is_letter (s2[j]) )
+            if (!j)
+                break;
+            else
+                j--;
         
         int res = letters_cmp (s1[i], s2[j]);
         if (res)
@@ -323,7 +323,7 @@ int rev_lines_cmp (Line str1, Line str2, is_letter_t is_letter, letters_cmp_t le
             i--;
             j--;
         }
-	}	
+    }	
 }
 
 //*********************************************************************************************************************
